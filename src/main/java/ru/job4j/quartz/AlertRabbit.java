@@ -25,7 +25,7 @@ public class AlertRabbit {
         try (InputStream in = AlertRabbit.class.getClassLoader()
                 .getResourceAsStream("rabbit.properties")) {
             properties.load(in);
-            Class.forName("org.postgresql.Driver");
+            Class.forName(properties.getProperty("class_forname"));
         }
         String url = properties.getProperty("url");
         String login = properties.getProperty("login");
@@ -78,7 +78,7 @@ public class AlertRabbit {
                     String sql = String.format(
                             "CREATE TABLE IF NOT EXISTS rabbit(%s, %s);",
                             "id SERIAL PRIMARY KEY",
-                            "created_date timestamp"
+                            "created_date CURRENT_TIMESTAMP"
                     );
                     statement.execute(sql);
                 } catch (Exception e) {

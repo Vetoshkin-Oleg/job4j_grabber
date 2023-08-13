@@ -30,19 +30,14 @@ public class Post {
             return false;
         }
         Post post = (Post) o;
-        return id == post.id && Objects.equals(title, post.title)
-                && Objects.equals(link, post.link) && Objects.equals(description, post.description)
-                && Objects.equals(created, post.created);
+        return id == post.id && Objects.equals(link, post.link);
     }
 
     @Override
     public int hashCode() {
         int result = 17;
         result = 31 * result + id;
-        result = 31 * result + (title == null ? 0 : title.hashCode());
         result = 31 * result + (link == null ? 0 : link.hashCode());
-        result = 31 * result + (description == null ? 0 : description.hashCode());
-        result = 31 * result + (created == null ? 0 : created.hashCode());
         return result;
     }
 }

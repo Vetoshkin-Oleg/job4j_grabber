@@ -21,9 +21,9 @@ public class HabrCareerParse implements Parse {
     public HabrCareerParse(DateTimeParser dateTimeParser) {
     }
 
-    private static List<String> templateReferences() {
+    protected static List<String> templateReferences() {
         List<String> references = new ArrayList<>();
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 1; i++) {
             String temp = String.format("%s?page=%d", HabrCareerParse.PAGE_LINK, i);
             references.add(temp);
         }
@@ -36,18 +36,6 @@ public class HabrCareerParse implements Parse {
         Elements rows = document.select(
                 ".vacancy-description__text");
         return rows.text();
-    }
-
-    public static void main(String[] args) {
-        List<Post> result = new ArrayList<>();
-        List<String> references = templateReferences();
-        HabrCareerParse habrCareerParse = new HabrCareerParse(new HabrCareerDateTimeParser());
-        for (String s : references) {
-            result.addAll(habrCareerParse.list(s));
-        }
-        for (Post p : result) {
-            System.out.println(p);
-        }
     }
 
     @Override

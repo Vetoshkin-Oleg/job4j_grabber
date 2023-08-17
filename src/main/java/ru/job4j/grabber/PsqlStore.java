@@ -1,5 +1,6 @@
 package ru.job4j.grabber;
 
+import org.jsoup.nodes.Element;
 import ru.job4j.grabber.utils.HabrCareerDateTimeParser;
 
 import java.io.IOException;
@@ -60,13 +61,7 @@ public class PsqlStore implements Store {
         try (PreparedStatement statement = cnn.prepareStatement("SELECT * FROM post")) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    posts.add(new Post(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getString("link"),
-                            resultSet.getString("text"),
-                            resultSet.getTimestamp("created").toLocalDateTime()
-                    ));
+                    posts.add(createPost(resultSet));
                 }
             }
         } catch (Exception e) {
@@ -84,19 +79,23 @@ public class PsqlStore implements Store {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    post = new Post(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getString("link"),
-                            resultSet.getString("text"),
-                            resultSet.getTimestamp("created").toLocalDateTime()
-                    );
+                    post = createPost(resultSet);
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return post;
+    }
+
+    private static Post createPost(ResultSet resultSet) throws SQLException {
+        return new Post(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getString("link"),
+                resultSet.getString("text"),
+                resultSet.getTimestamp("created").toLocalDateTime()
+        );
     }
 
     @Override

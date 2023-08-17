@@ -23,7 +23,7 @@ public class HabrCareerParse implements Parse {
 
     protected static List<String> templateReferences() {
         List<String> references = new ArrayList<>();
-        for (int i = 1; i <= 1; i++) {
+        for (int i = 1; i <= 5; i++) {
             String temp = String.format("%s?page=%d", HabrCareerParse.PAGE_LINK, i);
             references.add(temp);
         }

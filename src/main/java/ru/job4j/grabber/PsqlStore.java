@@ -16,7 +16,7 @@ public class PsqlStore implements Store {
 
     public PsqlStore(Properties cfg) throws IOException, ClassNotFoundException {
         try (InputStream in = PsqlStore.class.getClassLoader()
-                .getResourceAsStream("grabber.properties")) {
+                .getResourceAsStream("app.properties")) {
             cfg.load(in);
             Class.forName(cfg.getProperty("jdbc.driver"));
         }

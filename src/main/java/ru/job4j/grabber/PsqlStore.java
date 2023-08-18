@@ -1,6 +1,5 @@
 package ru.job4j.grabber;
 
-import org.jsoup.nodes.Element;
 import ru.job4j.grabber.utils.HabrCareerDateTimeParser;
 
 import java.io.IOException;

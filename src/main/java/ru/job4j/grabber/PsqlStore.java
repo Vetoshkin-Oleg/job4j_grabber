@@ -37,7 +37,8 @@ public class PsqlStore implements Store {
                                      + "name, text, link, created) VALUES (?, ?, ?, ?)"
                                      + "ON CONFLICT (link)"
                                      + "DO"
-                                     + " UPDATE SET link = EXCLUDED.link",
+                                     + " UPDATE SET name = EXCLUDED.name,"
+                                     + " text = EXCLUDED.text, created = EXCLUDED.created",
                              Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, post.getTitle());
             statement.setString(2, post.getDescription());

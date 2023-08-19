@@ -50,14 +50,13 @@ public class Grabber implements Grab {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
-            PsqlStore psqlStore = (PsqlStore) store;
             List<Post> result = new ArrayList<>();
             List<String> references = HabrCareerParse.templateReferences();
             for (String s : references) {
                 result.addAll(parse.list(s));
             }
             for (Post p : result) {
-                psqlStore.save(p);
+                store.save(p);
             }
         }
     }
@@ -72,8 +71,8 @@ public class Grabber implements Grab {
         scheduler.start();
         var parse = new HabrCareerParse(new HabrCareerDateTimeParser());
         var store = new PsqlStore(cfg);
+        store.createTable("post");
         var time = Integer.parseInt(cfg.getProperty("time"));
         new Grabber(parse, store, scheduler, time).init();
-        store.createTable("post");
     }
 }

@@ -1,14 +1,11 @@
 package ru.job4j.grabber;
 
-import ru.job4j.grabber.utils.HabrCareerDateTimeParser;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.StringJoiner;
 
 public class PsqlStore implements Store {
 
@@ -117,50 +114,6 @@ public class PsqlStore implements Store {
                     "created TIMESTAMP"
             );
             statement.execute(sql);
-        }
-    }
-
-    public String getTableScheme(String tableName) throws Exception {
-        var rowSeparator = "-".repeat(30).concat(System.lineSeparator());
-        var header = String.format("%-15s|%-15s%n", "NAME", "TYPE");
-        var buffer = new StringJoiner(rowSeparator, rowSeparator, rowSeparator);
-        buffer.add(header);
-        try (var statement = cnn.createStatement()) {
-            var selection = statement.executeQuery(String.format(
-                    "SELECT * FROM %s LIMIT 1", tableName
-            ));
-            var metaData = selection.getMetaData();
-            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                buffer.add(String.format("%-15s|%-15s%n",
-                        metaData.getColumnName(i), metaData.getColumnTypeName(i))
-                );
-            }
-        }
-        return buffer.toString();
-    }
-
-    public static void main(String[] args) throws Exception {
-        try (PsqlStore psqlStore = new PsqlStore(new Properties())) {
-            psqlStore.createTable("post");
-            System.out.println(psqlStore.getTableScheme("post"));
-
-            List<Post> result = new ArrayList<>();
-            List<String> references = HabrCareerParse.templateReferences();
-            HabrCareerParse habrCareerParse = new HabrCareerParse(new HabrCareerDateTimeParser());
-            for (String s : references) {
-                result.addAll(habrCareerParse.list(s));
-            }
-            for (Post p : result) {
-                psqlStore.save(p);
-            }
-
-            List<Post> resultFromDB = psqlStore.getAll();
-            for (Post p : resultFromDB) {
-                System.out.println(p);
-            }
-
-            Post post = psqlStore.findById(7);
-            System.out.println(post);
         }
     }
 }

@@ -4,11 +4,12 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import ru.job4j.grabber.utils.HabrCareerDateTimeParser;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
